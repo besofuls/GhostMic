@@ -1,0 +1,5 @@
+/target
+*.wav
+*.log
+.DS_Store
+Thumbs.db
