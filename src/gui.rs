@@ -9,9 +9,9 @@ use crate::engine::{AudioEngine, EngineConfig};
 pub fn run_gui() -> eframe::Result<()> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
-            .with_inner_size([460.0, 610.0])
-            .with_min_inner_size([420.0, 540.0])
-            .with_title("Seiren AEC — Stereo Echo Canceller"),
+            .with_inner_size([480.0, 680.0])
+            .with_min_inner_size([380.0, 420.0])
+            .with_title("GhostMic — Stereo Echo Canceller"),
         ..Default::default()
     };
 
@@ -233,11 +233,14 @@ impl eframe::App for SeirenAecApp {
                     .inner_margin(egui::Margin::same(16)),
             )
             .show(ui, |ui| {
+                egui::ScrollArea::vertical()
+                    .auto_shrink([false; 2])
+                    .show(ui, |ui| {
                 // Header
                 ui.horizontal(|ui| {
                     ui.vertical(|ui| {
                         ui.label(
-                            RichText::new("SEIREN AEC")
+                            RichText::new("GHOSTMIC")
                                 .size(22.0)
                                 .strong()
                                 .color(Color32::WHITE),
@@ -326,7 +329,7 @@ impl eframe::App for SeirenAecApp {
                     if !self.has_vb_cable {
                         ui.add_space(6.0);
                         ui.label(
-                            RichText::new("⚠ Chưa thấy 'CABLE Input'. Tải VB-Cable tại vb-audio.com/Cable để nối vào Discord.")
+                            RichText::new("[!] Chưa thấy 'CABLE Input'. Tải VB-Cable tại vb-audio.com/Cable để nối vào Discord.")
                                 .size(11.5)
                                 .color(Color32::from_rgb(250, 204, 21)),
                         );
@@ -371,7 +374,7 @@ impl eframe::App for SeirenAecApp {
                     let btn_w = (ui.available_width() - 10.0) * 0.62;
                     if running {
                         let stop_btn = egui::Button::new(
-                            RichText::new("⏹  DỪNG LỌC").size(14.5).strong().color(Color32::WHITE),
+                            RichText::new("DỪNG LỌC").size(14.5).strong().color(Color32::WHITE),
                         )
                         .fill(Color32::from_rgb(220, 38, 38))
                         .min_size(Vec2::new(btn_w, 40.0));
@@ -380,7 +383,7 @@ impl eframe::App for SeirenAecApp {
                         }
                     } else {
                         let start_btn = egui::Button::new(
-                            RichText::new("▶  BẮT ĐẦU LỌC").size(14.5).strong().color(Color32::WHITE),
+                            RichText::new("BẮT ĐẦU LỌC").size(14.5).strong().color(Color32::WHITE),
                         )
                         .fill(Color32::from_rgb(16, 185, 129))
                         .min_size(Vec2::new(btn_w, 40.0));
@@ -418,6 +421,7 @@ impl eframe::App for SeirenAecApp {
                             .color(Color32::from_rgb(148, 163, 184)),
                     );
                 }
+                    });
             });
     }
 }

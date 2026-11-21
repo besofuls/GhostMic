@@ -24,7 +24,9 @@ pub fn desired_wave_format(channels: u16) -> WaveFormat {
 }
 
 pub fn list_active_devices(direction: Direction) -> Result<(Vec<String>, Option<String>)> {
-    initialize_mta().ok().context("COM init failed")?;
+    // On the GUI main thread, winit/eframe already initializes COM as STA,
+    // so initialize_mta() returns RPC_E_CHANGED_MODE which is safe to ignore.
+    let _ = initialize_mta();
     let enumerator = DeviceEnumerator::new().context("Failed to create DeviceEnumerator")?;
     let default_name = enumerator
         .get_default_device(direction)

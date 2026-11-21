@@ -42,7 +42,7 @@ impl EngineMeters {
             speaker_rms: AtomicU32::new(0.0f32.to_bits()),
             raw_mic_rms: AtomicU32::new(0.0f32.to_bits()),
             clean_mic_rms: AtomicU32::new(0.0f32.to_bits()),
-            status_text: Mutex::new("San sang".into()),
+            status_text: Mutex::new("Sẵn sàng".into()),
             last_error: Mutex::new(None),
         }
     }
@@ -242,9 +242,9 @@ pub fn run_engine(
     })?;
 
     if is_test_mode {
-        meters.set_status(format!("Dang ghi thu nghiem {} giay...", cfg.test_seconds));
+        meters.set_status(format!("Đang ghi thử nghiệm {} giây...", cfg.test_seconds));
     } else {
-        meters.set_status("Dang loc am thanh (Stereo AEC3)...");
+        meters.set_status("Đang lọc âm thanh (Stereo AEC3)...");
     }
 
     let mut speaker_frame = [0.0f32; RENDER_FRAME_SAMPLES];
@@ -305,7 +305,7 @@ pub fn run_engine(
             processed_frames += 1;
             if processed_frames % 100 == 0 {
                 let left = cfg.test_seconds.saturating_sub((processed_frames / 100) as u32);
-                meters.set_status(format!("Dang ghi thu nghiem... con {left} giay"));
+                meters.set_status(format!("Đang ghi thử nghiệm... còn {left} giây"));
             }
             if processed_frames >= max_test_frames {
                 running.store(false, Ordering::SeqCst);
@@ -330,9 +330,9 @@ pub fn run_engine(
     }
 
     if let Some(ref clean_path) = cfg.test_wav {
-        meters.set_status(format!("Da luu file test tai: {}", clean_path.display()));
+        meters.set_status(format!("Đã lưu file test tại: {}", clean_path.display()));
     } else if meters.last_error.lock().ok().and_then(|e| e.clone()).is_none() {
-        meters.set_status("Da dung.");
+        meters.set_status("Đã dừng.");
     }
 
     Ok(())
